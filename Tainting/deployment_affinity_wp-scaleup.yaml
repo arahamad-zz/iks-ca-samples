@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scaleup-deployment-affinity
+spec:
+  selector:
+    matchLabels:
+      app: scaleup
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: scaleup
+    spec:
+      containers:
+      - name: scaleup
+        image: rabbitmq
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "1"
+          limits:
+            cpu: "1"
+      tolerations:
+      - key: "key"
+        value: "value1"
+        operator: "Equal"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: ibm-cloud.kubernetes.io/worker-pool-name
+                operator: In
+                values:
+                - default1
+                - ca

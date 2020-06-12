@@ -1,0 +1,24 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: scaleup-deployment-notol
+spec:
+  selector:
+    matchLabels:
+      app: scaleup-notol
+  replicas: 40 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: scaleup-notol
+    spec:
+      containers:
+      - name: scaleup-notol
+        image: rabbitmq
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "1"
+          limits:
+            cpu: "1"

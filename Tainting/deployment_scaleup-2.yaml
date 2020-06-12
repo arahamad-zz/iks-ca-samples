@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cascaleup
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cascaleup
+    spec:
+      containers:
+      - name: cascaleup
+        image: rabbitmq
+        resources:
+          requests:
+            cpu: "1"
+          limits:
+            cpu: "1"
+      tolerations:
+      - key: "key"
+        operator: "Exists"
+        effect: "NoSchedule" 
